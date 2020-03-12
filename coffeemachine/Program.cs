@@ -12,11 +12,15 @@ namespace coffeemachine
         {
            CoffeeMachine machine = new CoffeeMachine();
             string cmd = "";
+            string money = "";
 
            while(cmd != "quit")
             {
+                Console.WriteLine("Tape the order :");
                 cmd = Console.ReadLine();
-                machine.Work(cmd);
+                Console.WriteLine("Insert money :");
+                money = Console.ReadLine();
+                machine.Work(cmd, double.Parse(money.Replace(".", ",")));
             }
 
            
