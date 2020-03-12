@@ -11,5 +11,7 @@ namespace coffeemachine.Models
         public string   _typeOfDrink;
         public int      _sugarnumber = 0;
         public bool     _stick = false;
+        public bool     _extra = false;
+        public bool     _cold = false;
     }
 }
