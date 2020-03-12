@@ -10,6 +10,16 @@ namespace coffeemachine
     {
         static void Main(string[] args)
         {
+           CoffeeMachine machine = new CoffeeMachine();
+            string cmd = "";
+
+           while(cmd != "quit")
+            {
+                cmd = Console.ReadLine();
+                machine.Work(cmd);
+            }
+
+           
         }
     }
 }
