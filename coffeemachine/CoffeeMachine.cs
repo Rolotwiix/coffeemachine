@@ -10,11 +10,17 @@ namespace coffeemachine
     class CoffeeMachine
     {
         private Drink _drink;
+        private ReportingOrdersAndPrices _report;
         private string _message;
         private readonly string[] _orderType = new string[] { "T", "H", "C", "O" };
         private readonly double[] _orderPrice = new double[] { 0.4, 0.5, 0.6, 0.6 };
         private readonly string[] _type = new string[] { "tea", "chocolate", "coffee", "orange juice" };
         
+        public CoffeeMachine()
+        {
+            _report = new ReportingOrdersAndPrices(_type, _orderPrice);
+        }
+
         public void Work(string command, double money)
         {
             var res = command.Split(':');
@@ -24,6 +30,8 @@ namespace coffeemachine
             {
                 PrepareCommand(res);
                 PrintMessage();
+                reporting(res[0][0].ToString());
+                _report.PrintReport();
             }
         }
         
@@ -43,6 +51,12 @@ namespace coffeemachine
             }
         }
 
+        private void reporting(string v)
+        {
+            _report.IncrementDrinkSales( Array.IndexOf(_orderType, v) );
+        }
+
+
         private bool CheckMoney(string type, double money)
         {
             int typePosition = Array.IndexOf(_orderType, type[0].ToString());
@@ -53,6 +67,8 @@ namespace coffeemachine
             }
             return true;
         }
+
+
 
         private void PrintMessage()
         {
@@ -73,6 +89,7 @@ namespace coffeemachine
         private void ResetMachine()
         {
             _drink = new Drink();
-            _message = null;        }
+            _message = null;        
+        }
     }
 }
