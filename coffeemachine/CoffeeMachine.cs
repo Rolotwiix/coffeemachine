@@ -10,30 +10,46 @@ namespace coffeemachine
     class CoffeeMachine
     {
         private Drink _drink;
+        private double _money;
         private string _message;
         private readonly string[] _orderType = new string[] { "T", "H", "C" };
+        private readonly double[] _orderPrice = new double[] { 0.4, 0.5, 0.6 };
         private readonly string[] _type = new string[] { "tea", "chocolate", "coffee" };
         
         public void Work(string command)
         {
-            ResetMachine();
-            PrepareCommand(command);
-            PrintMessage();
-        }
-        
-        private void PrepareCommand(string command)
-        {
             var res = command.Split(':');
 
-            if (res[0] == "M")
-                _message = res[1];
+            ResetMachine();
+            if (CheckMoney(res[0]) == true)
+            {
+                PrepareCommand(res);
+                PrintMessage();
+            }
+        }
+        
+        private void PrepareCommand(string[] command)
+        {
+            if (command[0] == "M")
+                _message = command[1];
             else
             {
-                _drink._typeOfDrink = _type[Array.IndexOf(_orderType, res[0])];
-                _drink._sugarnumber = !string.IsNullOrEmpty(res[1]) ? int.Parse(res[1]) : 0;
-                if (!string.IsNullOrEmpty(res[2]) && Int32.Parse(res[2]) == 0)
+                _drink._typeOfDrink = _type[Array.IndexOf(_orderType, command[0])];
+                _drink._sugarnumber = !string.IsNullOrEmpty(command[1]) ? int.Parse(command[1]) : 0;
+                if (!string.IsNullOrEmpty(command[2]) && Int32.Parse(command[2]) == 0)
                     _drink._stick = true;
             }
+        }
+
+        private bool CheckMoney(string type)
+        {
+            int typePosition = Array.IndexOf(_orderType, type);
+            if (_orderPrice[typePosition] < _money)
+            {
+                Console.WriteLine($"please insert {_orderPrice[typePosition] - _money}$");
+                return false;
+            }
+            return true;
         }
 
         private void PrintMessage()
@@ -50,6 +66,7 @@ namespace coffeemachine
         {
             _drink = new Drink();
             _message = null;
+            _money = 0;
         }
     }
 }
